@@ -1,0 +1,31 @@
+.TH SETFILETIME 1 "v\ 1.0.0" "2014-0-21" "GNU"
+.SH NAME
+.B setfiletime
+\- Update file times in files listed in a user specified file.
+.SH SYNOPSIS
+.B setfiletime \fR[option] \fIfile.lst
+.SH OPTIONS
+.TP
+\-h, prints a brief help message.
+.SH DESCRIPTION
+\fBsetfiletime\fR reads each line in the input filename and if the lines
+.br
+are correctly formatted, attempts to update each filename.
+.br
+The updated file times will be present time for access time and the
+.br
+same by default for modification time. The modification time may be
+.br
+optionally set by the user. The only restriction on this time is that
+.br
+it may not be set in the future.
+.SH ERRORS
+Errors such as lines in the file conforming neither of the required
+.br
+formats are simply listed on \fIstderr\fR as are failures happening
+.br
+when updating file times of the presented pathnames.
+.SH VERSION
+This documentation describes \fBsetfiletime\fR version 1.0.0
+.SH "SEE ALSO"
+brokensym(1), duplicates(1), oldfiles(1), zapfiles(1), cleanuputils(7)
