@@ -7,6 +7,14 @@
 .SH OPTIONS
 .TP
 \-h, prints a brief help message.
+.TP
+\-o YYYY[MM[DD]], sets the actual time for the new m time.
+It may not be in the future.
+By default the month is January and the day is 1st of the month.
+.TP
+-t N[Mm|Dd], sets file m time to N periods less than now.
+Periods are by default years, or months (M|m), or days (D|d).
+
 .SH DESCRIPTION
 \fBsetfiletime\fR reads each line in the input filename and if the lines
 .br
