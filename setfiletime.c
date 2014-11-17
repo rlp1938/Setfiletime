@@ -28,12 +28,14 @@
 #include <time.h>
 #include <utime.h>
 #include <sys/stat.h>
+#include <libgen.h>
+#include <dirent.h>
 #include "fileutil.h"
 
 static time_t parsetimestring(const char *dts);
 static time_t ftbyage(int age, char aunit);
 
-char *helpmsg = "\n\tUsage: setfiletime [option] file\n"
+static char *helpmsg = "\n\tUsage: setfiletime [option] file\n"
   "\tUpdates file m time to equal the time the program starts or as\n"
   "\t optionally specified.\n"
   "\n\tOptions:\n"
@@ -119,21 +121,28 @@ int main(int argc, char **argv)
 	// input file
 	fpi = dofopen(infile, "r");
 	utb.modtime = newtime;
+	utb.actime = newtime;
 
 	// update times
 	while(fgets(inbuf, PATH_MAX, fpi)) {
-		char *eop;
+		char *eop, *eol;
 		eop = strstr(inbuf, pathend);
+		eol = strchr(inbuf, '\n');
 		if (eop) {
 			*eop = '\0';
+		} else if (eol) {
+			*eol = '\0';
 		} else {
 			fprintf(stderr, "Malformed line in: %s\n%s\n\n", infile,
 							inbuf);
+			continue;
 		}
 		if (utime(inbuf, &utb) == -1) {
 			perror(inbuf);	// don't abort, might be just one path
 		}
 	} // while())
+
+	fclose(fpi);
 
 	return 0;
 }//main()
@@ -225,3 +234,4 @@ time_t ftbyage(int age, char aunit)
 	}
 	return result;
 } // ftbyage()
+
